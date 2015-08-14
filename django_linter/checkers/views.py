@@ -61,7 +61,13 @@ class ViewsChecker(BaseChecker):
                         isinstance(parent, Getattr) and
                         parent.attrname == 'get'):
                     self.add_message('W5504', node=node)
+
         elif node.attrname == 'objects':
+
+            # Fixed the parent object didn't has attrname
+            if hasattr(parent, 'attrname'):
+                return
+
             if parent.attrname == 'get':
                 if self._is_view_function or self._is_view_class:
                     if not self._is_inside_try_except:
